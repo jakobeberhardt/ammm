@@ -1,0 +1,10 @@
+n = 3;
+t = 4;
+
+profit  = [ 2 4 3 ];
+length  = [ 2 4 1 ];
+min_deliver = [ 2 1 4 ];
+max_deliver = [ 3 4 4 ];
+surface = [ 3 2 4 ];
+
+surface_capacity = 6;
