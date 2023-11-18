@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+
+\title{Algorithmic Methods for Mathematical Models\\
+  Course Project }
+\author{Tim Wichelmann\\ \texttt{tim.wichelmann@estudiantat.upc.edu}\\[1ex] % [1ex] adds vertical space
+  Jakob Eberhardt\\ \texttt{jakob.eberhardt@estudiantat.upc.edu}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\subsection{Decision variables}
+
+$\text{start\_i}$ denotes the timeslot in which the baking process of order $i$ is started.
+
+\subsection{Auxiliary variables}
+
+\begin{itemize}
+\item $x_i$ is a binary variable indicating whether order $i$ is scheduled.
+\item $y_{ij}$ is a binary variable which indicates if the order $i$ is being baked in timeslot $j$.
+\end{itemize}
+
+\subsection{Objective function}
+
+\begin{equation*}
+  \max \sum^n_{i = 1} \text{profit\_i} \: x_i
+\end{equation*}
+
+\subsection{Constraints}
+
+Subject to
+\begin{align}
+  \text{start\_i} + \text{length\_i} &\leq \text{max\_deliver\_i} \\
+  \text{start\_i} + \text{length\_i} &\geq \text{min\_deliver\_i} \\
+  \sum \text{surface\_i} \: y_{ij} &\leq \text{surface\_capacity}, (1 \leq j \leq t) \\
+  TODO: X \\
+  TODO: Y
+\end{align}
+\end{document}
