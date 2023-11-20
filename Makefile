@@ -14,3 +14,6 @@ full:
 	done
 
 .PHONY: all full
+
+pdf: ammm.tex
+	pdflatex \\nonstopmode \\input ammm.tex

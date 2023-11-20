@@ -12,27 +12,51 @@ float         surface[N] = ...;    // Surface of i-th order.
 float   surface_capacity = ...;    // Surface capacity.
 
 
+
 // Define here your decision variables and
 // any other auxiliary program variables you need.
 // You can run an execute block if needed.
-
+dvar boolean	x[N]; // Order was taken
+dvar boolean start[N, T];
 //>>>>>>>>>>>>>>>>
-int tmp;
+dvar boolean y[N,T];
 //<<<<<<<<<<<<<<<<
 
-maximize  tmp;// Write here the objective function.
+maximize  sum(i in N) profit[i]*x[i];// Write here the objective function.
 
 //>>>>>>>>>>>>>>>>
 
+
 //<<<<<<<<<<<<<<<<
 
-//subject to {
-//
-//    // Write here the constraints.
-//
-//    //>>>>>>>>>>>>>>>>
-//    //<<<<<<<<<<<<<<<<
-//}
+subject to {
+	// finished bbefore max delivery
+	forall(i in N)
+	  forall(j in T)
+	  start[i, j] * (j + length[i] - 1) <= max_deliver[i];
+	  
+	// delivered before min
+	forall(i in N)
+	  forall(j in T)
+	  j + length[i] - 1 >= start[i,j]*min_deliver[i];
+    
+    //space is respectedz
+    forall(j in T)
+      sum(i in N) surface[i]*y[i,j] <= surface_capacity;
+      
+    //correct amount or zero
+    forall(i in N)
+      sum(j in T) y[i, j] == x[i]*length[i];
+      
+    // consecutive slots
+    forall(i in N, j in 1.. (t - length[i]))
+	      sum(k in j..(j + length[i] -1)) y[i,k]  >=  start[i, j]*length[i];
+	      
+	//everything has a 
+	forall(i in N)
+	  sum(j in T) start[i, j] == x[i];
+	
+}
 
 // You can run an execute block if needed.
 
