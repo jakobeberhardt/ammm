@@ -49,7 +49,7 @@ subject to {
       sum(j in T) y[i, j] == x[i]*length[i];
       
     // consecutive slots
-    forall(i in N, j in 1.. (t - length[i]))
+    forall(i in N, j in 1.. (t - length[i] + 1))
 	      sum(k in j..(j + length[i] -1)) y[i,k]  >=  start[i, j]*length[i];
 	      
 	//everything has a 
