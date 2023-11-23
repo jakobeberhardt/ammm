@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import sys
 from datParser import DATParser
 from ValidateConfig import ValidateConfig
-from InstanceGenerator import InstanceGenerator
+from InstanceGeneratorP3.InstanceGenerator import InstanceGenerator
 from AMMMGlobals import AMMMException
 
 def run():
@@ -30,7 +30,7 @@ def run():
         print("-----------------------")
         print("Reading Config file %s..." % configFile)
         config = DATParser.parse(configFile)
-        # ValidateConfig.validate(config)
+        ValidateConfig.validate(config)
         print("Creating Instances...")
         instGen = InstanceGenerator(config)
         instGen.generate()

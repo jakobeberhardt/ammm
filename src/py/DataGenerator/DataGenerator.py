@@ -27,19 +27,6 @@ class InstanceGenerator(object):
         self.config = config
 
     def generate(self):
-
-#         n = 3;
-# t = 4;
-
-# profit  = [ 2 4 3 ];
-# length  = [ 2 4 1 ];
-# min_deliver = [ 2 1 4 ];
-# max_deliver = [ 3 4 4 ];
-# surface = [ 3 2 4 ];
-
-# surface_capacity = 6;
-
-
         instancesDirectory = self.config.instancesDirectory
         fileNamePrefix = self.config.fileNamePrefix
         fileNameExtension = self.config.fileNameExtension
@@ -47,7 +34,7 @@ class InstanceGenerator(object):
 
         n = self.config.n
         t = self.config.t
-        surface = self.config.surface
+        surface = self.config.surface_capacity
 
         if not os.path.isdir(instancesDirectory):
             raise AMMMException('Directory(%s) does not exist' % instancesDirectory)
@@ -56,11 +43,11 @@ class InstanceGenerator(object):
             instancePath = os.path.join(instancesDirectory, '%s_%d.%s' % (fileNamePrefix, i, fileNameExtension))
             fInstance = open(instancePath, 'w')
 
-            lengths = [0] * n
-            profits = [0] * n
-            surfaces = [0] * n
-            min_deliveries = [0] * n
-            max_deliveries =[0] * n
+            lengths = []
+            profits = []
+            surfaces = []
+            min_deliveries = []
+            max_deliveries =[]
             for c in range(n):
                 lengths[c] = random.randint(1, t)
                 profits[c] = random.randint(1, 10)
@@ -69,13 +56,12 @@ class InstanceGenerator(object):
                 max_deliveries[c] = random.randint(lengths[c], t)
                 min_deliveries[c] = random.randint(1, max_deliveries[c]) 
 
-            fInstance.write('n=%s;\n' % n)
-            fInstance.write('t=%s;\n' % t)
-            fInstance.write('profit=%s;\n' % profits)
-            fInstance.write('length=%s;\n' % lengths)
-            fInstance.write('min_deliver=%s;\n' % min_deliveries)
-            fInstance.write('max_deliver=%s;\n' % max_deliveries)
-            fInstance.write('surface=%s;\n' % surfaces)
-            fInstance.write('surface_capacity=%s;\n' % surface)
+            fInstance.write('n=%d;\n' % n)
+            fInstance.write('t=%d;\n' % t)
+            fInstance.write('profit=%d;\n' % profits)
+            fInstance.write('length=%d;\n' % lengths)
+            fInstance.write('min_deliver=%d;\n' % min_deliveries)
+            fInstance.write('max_deliver=%d;\n' % max_deliveries)
+            fInstance.write('surface=%d;\n' % surface)
 
             fInstance.close()
