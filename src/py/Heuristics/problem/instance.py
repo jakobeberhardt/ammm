@@ -17,39 +17,40 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from Heuristics.problem.Task import Task
-from Heuristics.problem.CPU import CPU
-from Heuristics.problem.solution import Solution
+
+from HeuristicsProject.problem.Order import Order
+from HeuristicsProject.problem.solution import Solution
 
 
 class Instance(object):
     def __init__(self, config, inputData):
         self.config = config
         self.inputData = inputData
-        nTasks = inputData.nTasks
-        nCPUs = inputData.nCPUs
-        rt = inputData.rt
-        self.rc = inputData.rc
+        n = inputData.n
+        self.t = inputData.t
+        profit = inputData.profit
+        length = inputData.length
+        min_deliver = inputData.min_deliver
+        max_deliver = inputData.max_deliver
+        surface = inputData.surface
+        self.surface_capacity = inputData.surface_capacity
+        self.orders = [Order] * n
 
-        self.tasks = [None] * nTasks  # vector with tasks
-        for tId in range(0, nTasks):  # tId = 0..(nTasks-1)
-            self.tasks[tId] = Task(tId, rt[tId])
+        for oId in range(0, n):
+            self.orders[oId] = Order(
+                oId,
+                profit[oId],
+                length[oId],
+                min_deliver[oId],
+                max_deliver[oId],
+                surface[oId]
+            )
 
-        self.cpus = [None] * nCPUs  # vector with cpus
-        for cId in range(0, nCPUs):  # cId = 0..(nCPUs-1)
-            self.cpus[cId] = CPU(cId, self.rc[cId])
+    def getNumOrders(self):
+        return len(self.orders)
 
-    def getNumTasks(self):
-        return len(self.tasks)
-
-    def getNumCPUs(self):
-        return len(self.cpus)
-
-    def getTasks(self):
-        return self.tasks
-
-    def getCPUs(self):
-        return self.cpus
+    def getNumSlots(self):
+        return self.t
 
     def createSolution(self):
         solution = Solution(self.tasks, self.cpus, self.rc)
