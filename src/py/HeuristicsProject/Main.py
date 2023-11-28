@@ -59,7 +59,8 @@ class Main:
                 else:
                     raise AMMMException('Solver %s not supported.' % str(self.config.solver))
                 solution = solver.solve(solution=initialSolution)
-                print('Solution (CPUid: [TasksId]): %s' % str(solution.schedule))
+                print('Solution (Schedule): %s' % str(solution.schedule))
+                print('Profit : %s' % str(solution.fitness))
                 solution.saveToFile(self.config.solutionFile)
             else:
                 print('Instance is infeasible.')

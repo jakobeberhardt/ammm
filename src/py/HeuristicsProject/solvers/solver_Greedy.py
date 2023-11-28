@@ -53,8 +53,6 @@ class Solver_Greedy(_Solver):
 
             # compute feasible assignments
             candidateList = solution.findFeasibleAssignments(orderId)
-            for c in candidateList: pprint(vars(c))
-
             # no candidate assignments => no feasible assignment found
             if not candidateList:
                 solution.makeInfeasible()
@@ -63,7 +61,6 @@ class Solver_Greedy(_Solver):
             # select assignment
             candidate = self._selectCandidate(candidateList)
             # assign the current task to the CPU that resulted in a minimum highest load
-            print("Will asign %d to timeslot %d", orderId, candidate.start)
             solution.assign(orderId, candidate.start)
 
         return solution

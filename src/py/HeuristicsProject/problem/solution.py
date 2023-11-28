@@ -96,9 +96,6 @@ class Solution(_Solution):
         min_start = max((order.min_deliver - order.length), 0)
         for j in range(min_start, order.max_deliver - order.length +1):
             feasible = self.assign(orderId, j)
-            print(orderId)
-            print(j)
-            print(feasible)
             if not feasible: continue
             assignment = Assignment(orderId, j, self.fitness)
             feasibleAssignments.append(assignment)
