@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from AMMMGlobals import AMMMException
-from Heuristics.BRKGA_fwk.decoder import _Decoder
+from HeuristicsProject.BRKGA_fwk.decoder import _Decoder
 
 class Decoder(_Decoder):
     def __init__(self, config, instance):

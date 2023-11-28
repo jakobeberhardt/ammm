@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import time
-from Heuristics.logger import Logger
+from HeuristicsProject.logger import Logger
 
 
 class _Solver(object):

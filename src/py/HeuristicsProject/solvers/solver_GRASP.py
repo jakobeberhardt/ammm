@@ -19,8 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import random
 import time
-from Heuristics.solver import _Solver
-from Heuristics.solvers.localSearch import LocalSearch
+from HeuristicsProject.solver import _Solver
+from HeuristicsProject.solvers.localSearch import LocalSearch
 
 
 # Inherits from the parent abstract solver.

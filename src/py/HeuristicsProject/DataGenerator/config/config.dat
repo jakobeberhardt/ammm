@@ -1,6 +1,6 @@
 # file name: ../AMMMLabHeuristics/data/instance_XX.dat
-instancesDirectory = output;
-fileNamePrefix = big;
+instancesDirectory = ../data;
+fileNamePrefix = example;
 fileNameExtension = dat;
 
 inputDataFile=foo;

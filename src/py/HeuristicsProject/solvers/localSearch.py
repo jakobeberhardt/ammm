@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import copy
 import time
-from Heuristics.solver import _Solver
+from HeuristicsProject.solver import _Solver
 from AMMMGlobals import AMMMException
 
 
