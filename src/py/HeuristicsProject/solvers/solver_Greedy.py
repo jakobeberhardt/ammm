@@ -55,7 +55,7 @@ class Solver_Greedy(_Solver):
             candidateList = solution.findFeasibleAssignments(orderId)
             # no candidate assignments => no feasible assignment found
             if not candidateList:
-                solution.makeInfeasible()
+                #solution.makeInfeasible()
                 continue
 
             # select assignment

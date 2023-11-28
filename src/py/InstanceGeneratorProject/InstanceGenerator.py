@@ -28,18 +28,6 @@ class InstanceGenerator(object):
 
     def generate(self):
 
-#         n = 3;
-# t = 4;
-
-# profit  = [ 2 4 3 ];
-# length  = [ 2 4 1 ];
-# min_deliver = [ 2 1 4 ];
-# max_deliver = [ 3 4 4 ];
-# surface = [ 3 2 4 ];
-
-# surface_capacity = 6;
-
-
         instancesDirectory = self.config.instancesDirectory
         fileNamePrefix = self.config.fileNamePrefix
         fileNameExtension = self.config.fileNameExtension
@@ -71,11 +59,11 @@ class InstanceGenerator(object):
 
             fInstance.write('n=%s;\n' % n)
             fInstance.write('t=%s;\n' % t)
-            fInstance.write('profit=%s;\n' % profits)
-            fInstance.write('length=%s;\n' % lengths)
-            fInstance.write('min_deliver=%s;\n' % min_deliveries)
-            fInstance.write('max_deliver=%s;\n' % max_deliveries)
-            fInstance.write('surface=%s;\n' % surfaces)
+            fInstance.write('profit=%s;\n' % str(profits).replace(',', ' '))
+            fInstance.write('length=%s;\n' % str(lengths).replace(',', ' '))
+            fInstance.write('min_deliver=%s;\n' % str(min_deliveries).replace(',', ' '))
+            fInstance.write('max_deliver=%s;\n' % str(max_deliveries).replace(',', ' '))
+            fInstance.write('surface=%s;\n' % str(surfaces).replace(',', ' '))
             fInstance.write('surface_capacity=%s;\n' % surface)
 
             fInstance.close()

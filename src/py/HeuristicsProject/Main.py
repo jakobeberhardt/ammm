@@ -60,7 +60,7 @@ class Main:
                     raise AMMMException('Solver %s not supported.' % str(self.config.solver))
                 solution = solver.solve(solution=initialSolution)
                 print('Solution (Schedule): %s' % str(solution.schedule))
-                print('Profit : %s' % str(solution.fitness))
+                print('Total Profit : %s' % str(solution.fitness))
                 solution.saveToFile(self.config.solutionFile)
             else:
                 print('Instance is infeasible.')

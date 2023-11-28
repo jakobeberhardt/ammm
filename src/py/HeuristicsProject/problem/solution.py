@@ -58,8 +58,9 @@ class Solution(_Solution):
 
     def isInSolution(self, orderId):
         return sum(self.schedule[orderId]) > 0
+
     def updateFitness(self):
-        self.fitness = 0
+        self.fitness = 0.0
         for i in range(len(self.orders)):
             if self.isInSolution(i):
                 self.fitness += self.orders[i].profit
@@ -122,26 +123,6 @@ class Solution(_Solution):
 
     def __str__(self):
         strSolution = 'ProfitTotal = %10.8f;\n' % self.fitness
-        if self.fitness == float('inf'): return strSolution
-
-        # Xtc: decision variable containing the assignment of tasks to CPUs
-        # pre-fill with no assignments (all-zeros)
-        xtc = []
-        for t in range(0, len(self.tasks)):  # t = 0..(nTasks-1)
-            xtcEntry = [0] * len(self.cpus)  # results in a vector of 0's with nCPUs elements
-            xtc.append(xtcEntry)
-
-        # iterate over hash table taskIdToCPUId and fill in xtc
-        for taskId, cpuId in self.taskIdToCPUId.items():
-            xtc[taskId][cpuId] = 1
-
-        strSolution += 'xtc = [\n'
-        for xtcEntry in xtc:
-            strSolution += '\t[ '
-            for xtcValue in xtcEntry:
-                strSolution += str(xtcValue) + ' '
-            strSolution += ']\n'
-        strSolution += '];\n'
 
         return strSolution
 
