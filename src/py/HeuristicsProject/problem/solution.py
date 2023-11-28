@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import copy
+from pprint import pprint
+
 from HeuristicsProject.solution import _Solution
 
 
@@ -41,30 +43,30 @@ class Solution(_Solution):
         self.t = t
         self.surface_capacity = surface_capacity
         self.timeSlots = {}  # hash table: tuple of orderId -> timeslots[]
-        self. schedule = [[0] * t for i in range(len(orders))]
+        self.schedule = [[0] * t for i in range(len(orders))]
 
         super().__init__()
 
-    def isFeasableToAssignOrderToStartAtTimeslot(self, order, timeslot):
-        print("Checking feasability")
+    def isFeasableToAssignOrderToStartAtTimeslot(self, orderId, timeslot):
+        order = self.orders[orderId]
         for j in range(order.length):
+            sum = 0
             for i in range(len(self.orders)):
                 sum += self.orders[i].surface*self.schedule[i][timeslot + j]
             if self.surface_capacity < (order.surface + sum): return False
-        print(order.order_id)
         return True
 
-    def isInSolution(self, order):
-        return 1 in order.sum()
+    def isInSolution(self, orderId):
+        return sum(self.schedule[orderId]) > 0
     def updateFitness(self):
         self.fitness = 0
         for i in range(len(self.orders)):
-            if self.isInSolution(self.orders[i]):
+            if self.isInSolution(i):
                 self.fitness += self.orders[i].profit
         return self.fitness
 
     def isFeasibleToUnassignOrder(self, orderId):
-        return self.isInSolution(self.schedule[orderId])
+        return self.isInSolution(orderId)
 
     def getCPUIdAssignedToTaskId(self, taskId):
         if taskId not in self.taskIdToCPUId: return None
@@ -91,13 +93,17 @@ class Solution(_Solution):
     def findFeasibleAssignments(self, orderId):
         feasibleAssignments = []
         order = self.orders[orderId]
-        for j in range(order.min_deliver - order.length, order.max_deliver - order.length):
+        min_start = max((order.min_deliver - order.length), 0)
+        for j in range(min_start, order.max_deliver - order.length +1):
             feasible = self.assign(orderId, j)
+            print(orderId)
+            print(j)
+            print(feasible)
             if not feasible: continue
             assignment = Assignment(orderId, j, self.fitness)
             feasibleAssignments.append(assignment)
 
-            self.unassign(taskId, cpuId)
+            self.unassign(orderId)
 
         return feasibleAssignments
 
