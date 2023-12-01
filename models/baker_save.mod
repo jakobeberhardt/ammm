@@ -49,9 +49,9 @@ subject to {
 	  // sum(j in 1..(min_start[i] -1)) y[i, j] + sum(j in (max_deliver[i]+1)..t) y[i, j] + sum(j in 1..min_start[i]-1) start[i,j] + sum(j in max_deliver[i]+1..t) start[i,j]  == 0;
 	sum(j in 1..min_start[i]-1) start[i,j] + sum(j in max_start[i]+1..t) start[i,j]  == 0;
 
-    forall(i in N)
-      forall(j in min_start[i]..max_start[i])
-        sum(k in 1..j-1) y[i, k] + sum(k in j+length[i]..t) y[i, j] >= (start[i,j] - 1);
+//    forall(i in N)
+//      forall(j in min_start[i]..max_start[i])
+//        sum(k in 1..j-1) y[i, k] + sum(k in j+length[i]..t) y[i, j] >= (start[i,j] - 1);
   
     //space is respcted
     forall(j in T)

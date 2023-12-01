@@ -24,6 +24,7 @@ int max_start[o in N];
 
 dvar boolean	x[N]; // Order was taken
 dvar int start[N];
+dvar int end[N];
 //>>>>>>>>>>>>>>>>
 dvar boolean y[N,T];
 //<<<<<<<<<<<<<<<<
@@ -43,6 +44,9 @@ maximize  sum(i in N) profit[i]*x[i];// Write here the objective function.
 
 
 subject to {
+  
+    forall(i in N)
+      end[i] == start[i] + x[i]*length[i] - 1;
     
     //space is respcted
     forall(j in T)
@@ -50,19 +54,24 @@ subject to {
             
     // correct amount of consecutive slots
     forall(i in N)
-	      forall(j in 1..max_start[i])
-	        (j - start[i]) == length[i] - sum(k in j..(j + length[i] -1)) y[i, k];
-	
+  	  forall(j in min_start[i]..max_deliver[i])
+  	    y[i,j] == ((j >= start[i]) && (j <= end[i]));
+
 	// start is within intervall 
-	forall(i in N){
-	  min_start[i] <= start[i];
+	forall(i in N)
 	  start[i] <= max_start[i];
+    forall(i in N)	
+	  min_start[i] <= start[i];
 	  
 	// infeasible slots are zero  
 	forall(i in N)
-	  sum(j in 1..min_start[i]) y[i, j] + sum(j in max_deliver[i]..t) y[i, j] == 0;
- }	  
- 
+	  sum(j in 1..min_start[i]-1) y[i, j] == 0;
+	forall(i in N)
+	  sum(j in max_deliver[i]+1..t) y[i, j] == 0;  
+
+    // not needed but makes it faster
+ 	forall(i in N)
+  	  sum(j in min_start[i]..max_deliver[i]) y[i, j] == x[i]*length[i];
 }
 
 // You can run an execute block if needed.
