@@ -1,3 +1,5 @@
 .oplproject
 .project
 **.pdf
+**.aux
+**.log
