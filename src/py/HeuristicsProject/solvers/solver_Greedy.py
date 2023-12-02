@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import random, time
-from pprint import pprint
 
 from HeuristicsProject.solver import _Solver
 from HeuristicsProject.solvers.localSearch import LocalSearch
@@ -44,7 +43,7 @@ class Solver_Greedy(_Solver):
 
         # get tasks and sort them by their total required resources in descending order
         orders = self.instance.getOrders()
-        sortedOrders = sorted(orders, key=lambda o: o.getAddedValue(), reverse=True)
+        sortedOrders = sorted(orders, key=lambda o: o.getAddedValue(), reverse=False)
 
 
         # for each task taken in sorted order
@@ -78,6 +77,7 @@ class Solver_Greedy(_Solver):
         self.writeLogLine(float('inf'), 0)
 
         solution = self.construction()
+        print("I computed the optimal ")
         if self.config.localSearch:
             localSearch = LocalSearch(self.config, None)
             endTime= self.startTime + self.config.maxExecTime

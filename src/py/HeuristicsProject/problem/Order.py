@@ -34,7 +34,7 @@ class Order(object):
 
     def getAddedValue(self):
         #return ((self.profit * max((self.max_deliver - self.min_deliver), 1)) / (self.length * self.surface))
-        return ((self.profit)/(max((self.max_deliver - self.min_deliver), 1) * self.length * self.surface))
+        return self.length
 
     def getLength(self):
         return self.length

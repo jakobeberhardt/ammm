@@ -1,12 +1,12 @@
 # file name: ../AMMMLabHeuristics/data/instance_XX.dat
 instancesDirectory = ../data;
-fileNamePrefix = tiny;
+fileNamePrefix = 100_plot;
 fileNameExtension = dat;
 
 inputDataFile=foo;
 solutionFile=baa;
 solver=foo;
 numInstances = 1;
-n = 15;
-t = 15;
+n = 100;
+t = 100;
 surface=15;

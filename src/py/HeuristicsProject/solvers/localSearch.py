@@ -170,6 +170,7 @@ class LocalSearch(_Solver):
 
         cpusWithAssignments = self.getCPUswithAssignemnts(solution)
         nCPUs = len(cpusWithAssignments)
+        assignedOrders = solution.getAssignedOrders()
 
         for h in range(0, nCPUs-1):  # i = 0..(nCPUs-2)
             CPUPair_h = cpusWithAssignments[h]

@@ -59,6 +59,14 @@ class Solution(_Solution):
     def isInSolution(self, orderId):
         return sum(self.schedule[orderId]) > 0
 
+    def getAssignedOrders(self):
+        assignedOrders = []
+        for i in range(1, len(self.orders)):
+            if(self.isInSolution(self.orders[i])): assignedOrders += self.orders[i]
+
+        return assignedOrders
+
+
     def updateFitness(self):
         self.fitness = 0.0
         for i in range(len(self.orders)):
