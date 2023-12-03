@@ -24,12 +24,10 @@ import sys
 
 from HeuristicsProject.datParser import DATParser
 from AMMMGlobals import AMMMException
-from HeuristicsProject.BRKGA_fwk.solver_BRKGA import Solver_BRKGA
 from HeuristicsProject.ValidateInputDataProject import ValidateInputData
 from HeuristicsProject.ValidateConfig import ValidateConfig
 from HeuristicsProject.solvers.solver_Greedy import Solver_Greedy
 from HeuristicsProject.solvers.solver_GRASP import Solver_GRASP
-from HeuristicsProject.solvers.decoder_BRKGA import Decoder
 from HeuristicsProject.problem.instance import Instance
 
 

@@ -77,10 +77,6 @@ class Solution(_Solution):
     def isFeasibleToUnassignOrder(self, orderId):
         return self.isInSolution(orderId)
 
-    def getCPUIdAssignedToTaskId(self, taskId):
-        if taskId not in self.taskIdToCPUId: return None
-        return self.taskIdToCPUId[taskId]
-
     def assign(self, orderId, startTimeSlot):
         if not self.isFeasableToAssignOrderToStartAtTimeslot(orderId, startTimeSlot): return False
 
@@ -99,6 +95,13 @@ class Solution(_Solution):
         self.updateFitness()
         return True
 
+    def startsAt(self, orderId):
+        return self.schedule[orderId].index(1)
+
+    #def getRating(self, orderId, timeslot):
+        # rate the solution with the given new assignment according to some metric
+        #for
+
     def findFeasibleAssignments(self, orderId):
         feasibleAssignments = []
         order = self.orders[orderId]
@@ -113,21 +116,20 @@ class Solution(_Solution):
 
         return feasibleAssignments
 
-    def findBestFeasibleAssignment(self, orderId):
-        bestAssignment = Assignment(orderId, 0, 0)
-        for timeslots in self.cpus:
-            cpuId = cpu.getId()
-            feasible = self.assign(taskId, cpuId)
-            if not feasible: continue
+    def getAttendedOrders(self):
+        attended = []
+        for order in self.orders:
+            if self.isInSolution(order.order_id):
+                attended.append(order)
+        return attended
 
-            curHighestLoad = self.fitness
-            if bestAssignment.highestLoad > curHighestLoad:
-                bestAssignment.cpuId = cpuId
-                bestAssignment.highestLoad = curHighestLoad
+    def getUnattendedOrders(self):
+        unattended = []
+        for order in self.orders:
+            if not self.isInSolution(order.order_id):
+                unattended.append(order)
+        return unattended
 
-            self.unassign(taskId, cpuId)
-
-        return bestAssignment
 
     def __str__(self):
         strSolution = 'ProfitTotal = %10.8f;\n' % self.fitness

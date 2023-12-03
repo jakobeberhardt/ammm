@@ -43,8 +43,8 @@ class Solver_Greedy(_Solver):
 
         # get tasks and sort them by their total required resources in descending order
         orders = self.instance.getOrders()
-        sortedOrders = sorted(orders, key=lambda o: o.getAddedValue(), reverse=False)
-
+        sortedOrders = sorted(orders, key=lambda o: o.getAddedValue(), reverse=True)
+        # TODO: implement sortedOrders = sorted(orders, key=lambda o: self.getRating(o.orderId), reverse=False)
 
         # for each task taken in sorted order
         for order in sortedOrders:

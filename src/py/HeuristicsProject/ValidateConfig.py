@@ -35,6 +35,7 @@ class ValidateConfig(object):
         if len(inputDataFile) == 0:
             raise AMMMException('Value for inputDataFile is empty')
         if not os.path.exists(inputDataFile):
+            print(inputDataFile)
             raise AMMMException('inputDataFile(%s) does not exist' % inputDataFile)
 
         # Validate solution file
