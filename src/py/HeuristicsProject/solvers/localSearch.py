@@ -46,37 +46,32 @@ class LocalSearch(_Solver):
         self.maxExecTime = config.maxExecTime
         super().__init__(config, instance)
 
-    def createNeighborSolution(self, solution, moves):
-        # unassign the tasks specified in changes
-        # and reassign them to the new CPUs
+    def createNeighborSolution(self, solution, move):
 
         newSolution = copy.deepcopy(solution)
 
-        for move in moves:
-            newSolution.unassign(move.oldOrderId)
+        newSolution.unassign(move.oldOrderId)
 
-        for move in moves:
-            feasible = newSolution.assign(move.newOrderId, move.newTimeslot)
-            if not feasible: return None
+        feasible = newSolution.assign(move.newOrderId, move.newTimeslot)
+        if not feasible: return None
 
         return newSolution
 
-    def evaluateNeighbor(self, solution, moves):
+    def evaluateNeighbor(self, solution, move):
         oldProfit = solution.fitness
         profit = oldProfit
 
-        for move in moves:
-            maxProfit = oldProfit
+        maxProfit = oldProfit
 
-            if not solution.assign(move.newOrderId, move.newTimeslot):
-                continue
+        if not solution.assign(move.newOrderId, move.newTimeslot):
+            return 0
 
-            # calculate the profit
-            profit = solution.fitness
-            if profit > maxProfit:
-                maxProfit = profit
+        # calculate the profit
+        profit = solution.fitness
+        if profit > maxProfit:
+            maxProfit = profit
 
-            solution.unassign(move.newOrderId)
+        solution.unassign(move.newOrderId)
         return profit
 
     def exploreReassignment(self, solution):
@@ -101,11 +96,11 @@ class LocalSearch(_Solver):
             if not assignments:
                 continue
 
-            moves = [Move(oldOrderId, newOrderId, assignments[0].start)]
-            neighborHighestProfit = self.evaluateNeighbor(solution, moves)
+            move = Move(oldOrderId, newOrderId, assignments[0].start)
+            neighborHighestProfit = self.evaluateNeighbor(solution, move)
 
             if curProfit < neighborHighestProfit:
-                neighbor = self.createNeighborSolution(solution, moves)
+                neighbor = self.createNeighborSolution(solution, move)
                 if neighbor is None: continue
                 if self.policy == 'FirstImprovement':
                     return neighbor
