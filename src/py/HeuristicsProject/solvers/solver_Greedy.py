@@ -26,13 +26,11 @@ from HeuristicsProject.solvers.localSearch import LocalSearch
 # Inherits from the parent abstract solver.
 class Solver_Greedy(_Solver):
 
-    def _selectCandidate(self, candidateList):
+    def _selectCandidate(self, candidateList, solution):
         if self.config.solver == 'Greedy':
 
             # sort candidate assignments by highestLoad in ascending order
-            #sortedCandidateList = sorted(candidateList, key=lambda x: x.highestLoad)
-            # TODO: Add selection strategy
-            sortedCandidateList = candidateList
+            sortedCandidateList = sorted(candidateList, key=lambda x: solution.getRating(x.orderId, x.start), reverse=True)
             # choose assignment with minimum highest load
             return sortedCandidateList[0]
         return random.choice(candidateList)
@@ -44,7 +42,7 @@ class Solver_Greedy(_Solver):
         # get tasks and sort them by their total required resources in descending order
         orders = self.instance.getOrders()
         sortedOrders = sorted(orders, key=lambda o: o.getAddedValue(), reverse=True)
-        # TODO: implement sortedOrders = sorted(orders, key=lambda o: self.getRating(o.orderId), reverse=False)
+        # sortedOrders = sorted(orders, key=lambda o: solution.getRating(o.order_id), reverse=False)
 
         # for each task taken in sorted order
         for order in sortedOrders:
@@ -58,7 +56,7 @@ class Solver_Greedy(_Solver):
                 continue
 
             # select assignment
-            candidate = self._selectCandidate(candidateList)
+            candidate = self._selectCandidate(candidateList, solution)
             # assign the current task to the CPU that resulted in a minimum highest load
             solution.assign(orderId, candidate.start)
 
@@ -74,10 +72,9 @@ class Solver_Greedy(_Solver):
         if localSearch is not None:
             self.config.localSearch = localSearch
 
-        self.writeLogLine(float('inf'), 0)
+        # self.writeLogLine(float('inf'), 0)
 
         solution = self.construction()
-        print("I computed the optimal ")
         if self.config.localSearch:
             localSearch = LocalSearch(self.config, None)
             endTime= self.startTime + self.config.maxExecTime

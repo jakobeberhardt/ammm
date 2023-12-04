@@ -79,28 +79,6 @@ class LocalSearch(_Solver):
             solution.unassign(move.newOrderId)
         return profit
 
-    # def getAssignmentsSortedByProfit(self, solution):
-        # order = solution.tasks
-        # cpus = solution.cpus
-
-        # # create vector of assignments <task, cpu>
-        # assignments = []
-        # for task in tasks:
-        #     taskId = task.getId()
-        #     cpuId = solution.getCPUIdAssignedToTaskId(taskId)
-        #     cpu = cpus[cpuId]
-        #     highestLoad = solution.loadPerCPUId[cpuId]
-        #     assignment = (task, cpu, highestLoad)
-        #     assignments.append(assignment)
-
-        # # For best improvement policy it does not make sense to sort the tasks since all of them must be explored.
-        # # However, for first improvement, we can start by the tasks assigned to the more loaded CPUs.
-        # if self.policy == 'BestImprovement': return assignments
-
-        # # Sort assignments by the load of the assigned CPU in descending order.
-        # sorted_assignments = sorted(assignments, key=lambda x: x[2], reverse=True)
-        # return sorted_assignments
-
     def exploreReassignment(self, solution):
         # reassign one order to a different time slot
 

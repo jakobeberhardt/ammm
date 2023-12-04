@@ -40,6 +40,7 @@ class Assignment(object):
 class Solution(_Solution):
     def __init__(self, orders, t, surface_capacity):
         self.orders = orders
+        self.n = len(orders)
         self.t = t
         self.surface_capacity = surface_capacity
         self.timeSlots = {}  # hash table: tuple of orderId -> timeslots[]
@@ -98,9 +99,18 @@ class Solution(_Solution):
     def startsAt(self, orderId):
         return self.schedule[orderId].index(1)
 
-    #def getRating(self, orderId, timeslot):
+    def getRating(self, orderId, timeslot):
         # rate the solution with the given new assignment according to some metric
-        #for
+        self.assign(orderId, timeslot)
+        avg = 0.0
+        for j in range(1,self.t):
+            for i in range(1,self.n):
+                if self.schedule[i][j]:
+                    avg += self.orders[i].surface
+        avg /= self.t
+        avg /= self.surface_capacity
+        self.unassign(orderId)
+        return avg
 
     def findFeasibleAssignments(self, orderId):
         feasibleAssignments = []
