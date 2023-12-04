@@ -74,15 +74,15 @@ class LocalSearch(_Solver):
         solution.unassign(move.newOrderId)
         return profit
 
-    def exploreReassignment(self, solution):
+    def exploreReassignment(self, solution, iterations):
         # reassign one order to a different time slot
 
         # try to remove orders with high space requirements to allow scheduling of other profitable orders
         oldOrders = sorted(solution.getAttendedOrders(), key=lambda o: o.getReassignmentRating(), reverse=True)
-        oldOrderId = oldOrders[0].order_id
+        oldOrderId = oldOrders[iterations % len(oldOrders)].order_id
 
         curProfit = solution.getFitness()
-        bestNeighbor = solution
+        bestNeighbor = None
 
         # get unattended orders sorted by profit (high to low)
         sortedUnattendedOrders = sorted(solution.getUnattendedOrders(), key=lambda o: o.profit, reverse=True)
@@ -113,9 +113,9 @@ class LocalSearch(_Solver):
 
         return bestNeighbor
 
-    def exploreNeighborhood(self, solution):
+    def exploreNeighborhood(self, solution, iterations):
         # if self.nhStrategy == 'TaskExchange': return self.exploreExchange(solution)
-        if self.nhStrategy == 'Reassignment': return self.exploreReassignment(solution)
+        if self.nhStrategy == 'Reassignment': return self.exploreReassignment(solution, iterations)
         else: raise AMMMException('Unsupported NeighborhoodStrategy(%s)' % self.nhStrategy)
 
     def solve(self, **kwargs):
@@ -133,12 +133,14 @@ class LocalSearch(_Solver):
 
         # keep iterating while improvements are found
         while time.time() < endTime:
-            iterations += 1
-            neighbor = self.exploreNeighborhood(incumbent)
-            if neighbor is None: break
+            neighbor = self.exploreNeighborhood(incumbent, iterations)
+            if neighbor is None:
+                iterations += 1
+                continue
             neighborFitness = neighbor.getFitness()
             if incumbentFitness > neighborFitness: break
             incumbent = neighbor
             incumbentFitness = neighborFitness
+            iterations = 0
 
         return incumbent
