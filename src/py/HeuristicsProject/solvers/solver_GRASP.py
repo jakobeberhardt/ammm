@@ -107,7 +107,7 @@ class Solver_GRASP(_Solver):
                     incumbent = solution
                     highestProfit = solutionProfit
                     self.writeLogLine(highestProfit, iteration)
-
+            
             incumbent = self.instance.createSolution()
             incumbent.makeInfeasible()
 
