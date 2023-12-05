@@ -4,3 +4,8 @@
 **.aux
 **.log
 **.pyc
+
+**.idea
+**.toc
+**.swp
+**.lof

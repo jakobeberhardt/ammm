@@ -16,7 +16,8 @@ full:
 .PHONY: all full
 
 pdf: ammm.tex
-	pdflatex \\nonstopmode \\input ammm.tex
+	pdflatex \\nonstopmode \\input ammm.tex; code ./ammm.pdf
+
 
 clean:
 	rm *.aux *.log 
