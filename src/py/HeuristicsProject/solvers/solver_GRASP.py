@@ -27,28 +27,55 @@ from pprint import pprint
 # Inherits from the parent abstract solver.
 class Solver_GRASP(_Solver):
 
-    def _selectCandidate(self, candidateList, alpha):
+    def _selectAssignmentCandidate(self, candidateList, alpha):
 
         # sort candidate assignments by highestLoad in ascending order
         # TODO: Pass rating
-        sortedCandidateList = sorted(candidateList, key=lambda x: x.totalProfit, reverse=True)
+        sortedCandidateList = sorted(candidateList, key=lambda x: x.getAssignmentRating(), reverse=True)
         
         # compute boundary highest load as a function of the minimum and maximum highest loads and the alpha parameter
-        minScore = sortedCandidateList[-1].totalProfit
-        maxScore = sortedCandidateList[0].totalProfit
+        minRating = sortedCandidateList[-1].getAssignmentRating()
+        maxRating = sortedCandidateList[0].getAssignmentRating()
 
-        boundaryScore = maxScore + (maxScore - minScore) * alpha
+        boundaryScore = maxRating - (maxRating - minRating) * alpha
         
         # find elements that fall into the RCL
-        maxIndex = 1
+        maxIndex = 0
         for candidate in sortedCandidateList:
-            if candidate.totalProfit > boundaryScore:
+            if candidate.getAssignmentRating()  >= boundaryScore:
                 maxIndex += 1
 
         # create RCL and pick an element randomly
         rcl = sortedCandidateList[0:maxIndex]          # pick first maxIndex elements starting from element 0
-        if not rcl: return None
+        if not rcl:
+            return None
         return random.choice(rcl)          # pick a candidate from rcl at random
+
+    def _selectOrderCandidate(self, candidateList, alpha):
+
+        # sort candidate assignments by highestLoad in ascending order
+        # TODO: Pass rating
+        sortedCandidateList = sorted(candidateList, key=lambda x: x.getAddedValue(), reverse=True)
+
+        # compute boundary highest load as a function of the minimum and maximum highest loads and the alpha parameter
+        lowestRatedOrder = sortedCandidateList[-1]
+        highestRatedOrder = sortedCandidateList[0]
+        minRating = lowestRatedOrder.getAddedValue()
+        maxRating = highestRatedOrder.getAddedValue()
+
+        boundaryScore = maxRating - (maxRating - minRating) * alpha
+
+        # find elements that fall into the RCL
+        maxIndex = 0
+        for candidate in sortedCandidateList:
+            if candidate.getAddedValue() >= boundaryScore:
+                maxIndex += 1
+
+        # create RCL and pick an element randomly
+        rcl = sortedCandidateList[0:maxIndex]  # pick first maxIndex elements starting from element 0
+        if not rcl:
+            return None
+        return random.choice(rcl)  # pick a candidate from rcl at random
     
     def _greedyRandomizedConstruction(self, alpha):
         # get an empty solution for the problem
@@ -61,16 +88,26 @@ class Solver_GRASP(_Solver):
 
         # for each task taken in sorted order
         for order in sortedOrders:
+        # for i in range(0, len(sortedOrders)):
+            # order = self._selectOrderCandidate(sortedOrders, alpha)
+            # if not order: continue
+
             orderId = order.getId()
 
             # compute feasible assignments
             candidateList = solution.findFeasibleAssignments(orderId)
             # no candidate assignments => no feasible assignment found
             if not candidateList:
+                # print("candidate list empty")
                 continue
+            # print("candidate list not empty")
 
             # select assignment (random)
-            candidate = self._selectCandidate(candidateList, alpha)
+            candidate = self._selectAssignmentCandidate(candidateList, alpha)
+            if not candidate:
+                # print("could not select candidate")
+                continue
+            # print("selected candidate")
             # assign the current task to the CPU that resulted in a minimum highest load
             solution.assign(orderId, candidate.start)
         return solution
@@ -101,15 +138,11 @@ class Solver_GRASP(_Solver):
                 endTime = (self.startTime + self.config.maxExecTime) / 100
                 solution = localSearch.solve(solution=solution, startTime=self.startTime, endTime=endTime)
 
-            if solution.isFeasible():
-                solutionProfit = solution.getFitness()
-                if solutionProfit > highestProfit:
-                    incumbent = solution
-                    highestProfit = solutionProfit
-                    self.writeLogLine(highestProfit, iteration)
-            
-            incumbent = self.instance.createSolution()
-            incumbent.makeInfeasible()
+            solutionProfit = solution.getFitness()
+            if solutionProfit > highestProfit:
+                incumbent = solution
+                highestProfit = solutionProfit
+                self.writeLogLine(highestProfit, iteration)
 
         self.writeLogLine(highestProfit, iteration)
         self.numSolutionsConstructed = iteration

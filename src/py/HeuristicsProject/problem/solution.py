@@ -26,10 +26,14 @@ from HeuristicsProject.solution import _Solution
 # This class stores the load of the highest loaded CPU
 # when a task is assigned to a CPU.
 class Assignment(object):
-    def __init__(self, orderId, start, totalProfit):
+    def __init__(self, orderId, start, totalProfit, assignmentRating):
         self.orderId = orderId
         self.start = start
         self.totalProfit = totalProfit
+        self.assignmentRating = assignmentRating
+
+    def getAssignmentRating(self):
+        return self.assignmentRating
 
     def __str__(self):
         return "<orderId_%d, start_%d>: totalProfit: %d" % (self.orderId, self.start, self.totalProfit)
@@ -119,7 +123,7 @@ class Solution(_Solution):
         for j in range(min_start, order.max_deliver - order.length +1):
             feasible = self.assign(orderId, j)
             if not feasible: continue
-            assignment = Assignment(orderId, j, self.fitness)
+            assignment = Assignment(orderId, j, self.fitness, self.getRating(orderId, j))
             feasibleAssignments.append(assignment)
 
             self.unassign(orderId)
