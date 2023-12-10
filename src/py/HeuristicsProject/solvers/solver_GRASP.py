@@ -81,16 +81,13 @@ class Solver_GRASP(_Solver):
         # get an empty solution for the problem
         solution = self.instance.createSolution()
 
-        # get tasks and sort them by their total required resources in descending order
+        # get orders and sort them by their total required resources in descending order
         orders = self.instance.getOrders()
         sortedOrders = sorted(orders, key=lambda o: o.getAddedValue(), reverse=True)
         # sortedOrders = sorted(orders, key=lambda o: solution.getRating(o.order_id), reverse=False)
 
-        # for each task taken in sorted order
+        # for each order taken in sorted order
         for order in sortedOrders:
-        # for i in range(0, len(sortedOrders)):
-            # order = self._selectOrderCandidate(sortedOrders, alpha)
-            # if not order: continue
 
             orderId = order.getId()
 
@@ -98,17 +95,11 @@ class Solver_GRASP(_Solver):
             candidateList = solution.findFeasibleAssignments(orderId)
             # no candidate assignments => no feasible assignment found
             if not candidateList:
-                # print("candidate list empty")
                 continue
-            # print("candidate list not empty")
-
             # select assignment (random)
             candidate = self._selectAssignmentCandidate(candidateList, alpha)
             if not candidate:
-                # print("could not select candidate")
                 continue
-            # print("selected candidate")
-            # assign the current task to the CPU that resulted in a minimum highest load
             solution.assign(orderId, candidate.start)
         return solution
     

@@ -39,12 +39,12 @@ class Solver_Greedy(_Solver):
         # get an empty solution for the problem
         solution = self.instance.createSolution()
 
-        # get tasks and sort them by their total required resources in descending order
+        # get orders and sort them by their added value resources in descending order
         orders = self.instance.getOrders()
         sortedOrders = sorted(orders, key=lambda o: o.getAddedValue(), reverse=True)
         # sortedOrders = sorted(orders, key=lambda o: solution.getRating(o.order_id), reverse=False)
 
-        # for each task taken in sorted order
+        # for each order taken in sorted order
         for order in sortedOrders:
             orderId = order.getId()
 
@@ -57,7 +57,7 @@ class Solver_Greedy(_Solver):
 
             # select assignment
             candidate = self._selectCandidate(candidateList, solution)
-            # assign the current task to the CPU that resulted in a minimum highest load
+            # assign the current order to the time slot
             solution.assign(orderId, candidate.start)
 
         return solution

@@ -22,9 +22,6 @@ from pprint import pprint
 
 from HeuristicsProject.solution import _Solution
 
-
-# This class stores the load of the highest loaded CPU
-# when a task is assigned to a CPU.
 class Assignment(object):
     def __init__(self, orderId, start, totalProfit, assignmentRating):
         self.orderId = orderId
@@ -105,16 +102,19 @@ class Solution(_Solution):
 
     def getRating(self, orderId, timeslot):
         # rate the solution with the given new assignment according to some metric
+        order = self.orders[orderId]
         self.assign(orderId, timeslot)
-        avg = 0.0
-        for j in range(1,self.t):
+        avgsum = 0.0
+        for j in range(timeslot,timeslot + order.length):
+            avg = 0.0
             for i in range(1,self.n):
                 if self.schedule[i][j]:
                     avg += self.orders[i].surface
-        avg /= self.t
-        avg /= self.surface_capacity
+            avg /= self.surface_capacity
+            avgsum += avg
+        avgsum /= order.length
         self.unassign(orderId)
-        return avg
+        return avgsum
 
     def findFeasibleAssignments(self, orderId):
         feasibleAssignments = []

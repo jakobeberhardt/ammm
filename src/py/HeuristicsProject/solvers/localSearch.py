@@ -23,7 +23,6 @@ from solver import _Solver
 from AMMMGlobals import AMMMException
 
 
-# A change in a solution in the form: move taskId from curCPUId to newCPUId.
 # This class is used to perform sets of modifications.
 # A new solution can be created based on an existing solution and a list of
 # changes using the createNeighborSolution(solution, moves) function.
@@ -114,7 +113,6 @@ class LocalSearch(_Solver):
         return bestNeighbor
 
     def exploreNeighborhood(self, solution, iterations):
-        # if self.nhStrategy == 'TaskExchange': return self.exploreExchange(solution)
         if self.nhStrategy == 'Reassignment': return self.exploreReassignment(solution, iterations)
         else: raise AMMMException('Unsupported NeighborhoodStrategy(%s)' % self.nhStrategy)
 
