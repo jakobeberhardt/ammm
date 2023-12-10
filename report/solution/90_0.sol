@@ -1,4 +1,4 @@
-// exact 30 min
+// 30 min
 // solution (optimal) with objective 141
 // Quality Incumbent solution:
 // MILP objective                                 1.4100000000e+02
