@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import sys
+import os
 from datParser import DATParser
 from ValidateConfig import ValidateConfig
 from InstanceGenerator import InstanceGenerator
@@ -25,6 +26,7 @@ from AMMMGlobals import AMMMException
 
 def run():
     try:
+
         configFile = "config/config.dat"
         print("AMMM Instance Generator")
         print("-----------------------")

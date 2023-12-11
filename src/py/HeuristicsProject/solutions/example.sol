@@ -1,1 +1,1 @@
-ProfitTotal = 142.00000000;
+ProfitTotal = 93.00000000;

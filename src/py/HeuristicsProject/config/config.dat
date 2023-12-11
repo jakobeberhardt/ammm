@@ -1,7 +1,7 @@
 # --- Common specific parameters ------------------------------------------------------------------------------
-inputDataFile        = data/125_plot_0.dat;        # Input DAT file
+inputDataFile        = data/90_0.dat;        # Input DAT file
 solutionFile         = solutions/example.sol;   # Output DAT file (solution)
-solver               = GRASP;                  # Supported solvers: Greedy / Random / GRASP / BRKGA
+solver               = Greedy;                  # Supported solvers: Greedy / Random / GRASP / BRKGA
 maxExecTime          = 300;                      # Maximum execution time in seconds
 verbose              = True;                    # Verbose mode?
 
@@ -10,10 +10,10 @@ verbose              = True;                    # Verbose mode?
 
 # --- GRASP constructive specific parameters ------------------------------------------------------------------
 # Ignored if solver is not GRASP.
-alpha                = 0.2;                 # Alpha parameter for the GRASP solver.
+alpha                = 1.0;                 # Alpha parameter for the GRASP solver.
 
 # --- Local Search specific parameters ------------------------------------------------------------------------
-localSearch          = True;                # Enable local search?
+localSearch          = False;                # Enable local search?
 neighborhoodStrategy = Reassignment;        # Supported Neighborhoods: Reassignment
 policy               = FirstImprovement;    # Supported Policies: FirstImprovement / BestImprovement
 
