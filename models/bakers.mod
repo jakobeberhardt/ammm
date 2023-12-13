@@ -1,5 +1,3 @@
-// PLEASE ONLY CHANGE THIS FILE WHERE INDICATED.
-
 int                    n = ...;    // Number of orders.
 int                    t = ...;    // Number of time slots
 range                  N = 1..n;   // Range of orders.
@@ -13,23 +11,13 @@ float   surface_capacity = ...;    // Surface capacity.
 int min_start[o in N];
 int max_start[o in N];
 
-
-
-
-
-// Define here your decision variables and
-// any other auxiliary program variables you need.
-// You can run an execute block if needed.
-
-
-dvar boolean	x[N]; // Order was taken
+dvar boolean x[N]; // Order was taken
 dvar int start[N];
-dvar int end[N];
-//>>>>>>>>>>>>>>>>
-dvar boolean y[N,T];
-//<<<<<<<<<<<<<<<<
+dvar int end[N]; 
 
+dvar boolean y[N,T]; // schedule
 
+// initialize auxiliary arrays with correct values
 execute {
 	for(var o = 1; o<=n; o++) {
   		min_start[o] = min_deliver[o] - length[o]+1;
@@ -40,11 +28,13 @@ execute {
   } 		 
   };
 
-maximize  sum(i in N) profit[i]*x[i];// Write here the objective function.
+// Objective function
+maximize  sum(i in N) profit[i]*x[i];
 
-
+// constraints
 subject to {
   
+  	// start and end have the intended meaning
     forall(i in N)
       end[i] == start[i] + x[i]*length[i] - 1;
     
@@ -69,13 +59,7 @@ subject to {
 	forall(i in N)
 	  sum(j in max_deliver[i]+1..t) y[i, j] == 0;  
 
-    // not needed but makes it faster
+    // not needed but makes execution faster
  	forall(i in N)
   	  sum(j in min_start[i]..max_deliver[i]) y[i, j] == x[i]*length[i];
 }
-
-// You can run an execute block if needed.
-
-//>>>>>>>>>>>>>>>>
-
-//<<<<<<<<<<<<<<<<
