@@ -9,4 +9,5 @@
 **.toc
 **.swp
 **.lof
-.*idea
+**.idea
+**__pycache__

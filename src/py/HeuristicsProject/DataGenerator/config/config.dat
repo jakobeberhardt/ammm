@@ -1,12 +1,9 @@
 # file name: ../AMMMLabHeuristics/data/instance_XX.dat
 instancesDirectory = ../data;
-fileNamePrefix = 475_0;
+fileNamePrefix = 500_0;
 fileNameExtension = dat;
 
-inputDataFile=foo;
-solutionFile=baa;
-solver=foo;
 numInstances = 1;
-n = 475;
-t = 475;
+n = 500;
+t = 500;
 surface=15;
