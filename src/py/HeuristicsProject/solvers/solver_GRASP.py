@@ -126,7 +126,7 @@ class Solver_GRASP(_Solver):
             if self.config.localSearch:
                 localSearch = LocalSearch(self.config, None)
                 # TODO Make local search time configurable
-                endTime = (self.startTime + self.config.maxExecTime) / 100
+                endTime = (self.startTime + self.config.maxExecTime) / 6
                 solution = localSearch.solve(solution=solution, startTime=self.startTime, endTime=endTime)
 
             solutionProfit = solution.getFitness()
