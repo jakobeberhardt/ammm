@@ -29,6 +29,7 @@ The project is structured as followed:
 - **src/py/misc** includes various scripts for benchmarking and plotting data regarding the Python implementations
 - **Makefile** can be used to automate CPLEX benchmarks
 - **src/py/HeuristicsProject/data** includes instances used for benchmarking
+- **results.ods** includes the benchmarking results used in the report
 
 <!-- TOC --><a name="running-the-ilp"></a>
 ## Running the ILP
