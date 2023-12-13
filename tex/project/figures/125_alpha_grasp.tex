@@ -1,0 +1,45 @@
+\begin{tikzpicture}
+\begin{axis}[
+    title={GRASP Solver Performance by Alpha Tuning},
+    xlabel={Alpha Value},
+    ylabel={Quality of Solution (\%)},
+    xmin=0, xmax=1,
+    ymin=30, ymax=100,
+    xtick={0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1},
+    ytick={30,40,50,60,70,80,90,100},
+    legend pos=south east,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+
+%Grasp, max obj = 146, 164, cplex
+\addplot[color=blue, mark=square] coordinates {
+    (0, 76) 
+    (0.1, 85) % 140, 153 it
+    (0.2, 86.5) % 141, 161 it
+    (0.3, 86.5) % 142, 146 it 
+    (0.4, 86.5) % 142 142 it
+    (0.5, 86.5) % 140 157 it
+    (0.6, 85) % 140 147 it
+    (0.7, 86) % 141 160 it
+    (0.8, 89) % 142 161 it
+    (0.9, 89) % 146 150 it
+    (1, 86)   % 141 149
+};
+\addlegendentry{GRASP Solver (1 minute)}
+
+% Baseline solution (greedy), 126
+\addplot[color=orange, mark=o] coordinates {
+    (0, 76) 
+    (1, 76)
+};
+\addlegendentry{Greedy (Rating)}
+% Baseline solution (greed, profit onlyy), 97
+\addplot[color=red, mark=o] coordinates {
+    (0, 60) 
+    (1, 60)
+};
+\addlegendentry{Greedy (Profit Only)}
+
+\end{axis}
+\end{tikzpicture}

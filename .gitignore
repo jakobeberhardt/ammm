@@ -11,3 +11,7 @@
 **.lof
 **.idea
 **/__pycache__
+
+**.out
+**.nav
+**.snm

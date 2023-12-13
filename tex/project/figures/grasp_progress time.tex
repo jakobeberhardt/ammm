@@ -1,0 +1,47 @@
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel={Time in Seconds},
+    ylabel={Percentage of Optimal Solution (\%}),
+    xmin=0, xmax=120,
+    ymin=70, ymax=100, % Adjusted y-axis range to fit percentage values
+    xtick={0,20,40,60,80,100,120},
+    ytick={75,80,85,90,95,100},
+    legend pos=north west,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+\addplot[color=green, mark=x] coordinates {
+    (0, 76.0)
+    (10, 81.71)
+    (20, 85.37)
+    (30, 87.20)
+    (40, 87.20)
+    (50, 87.20)
+    (60, 89)
+    (70, 89)
+    (80, 89)
+    (90, 89)
+    (100, 89)
+    (110, 89)
+    (120, 92)
+};
+\small\addlegendentry{GRASP ($\alpha$ = 0.8)}
+
+\addplot[color=orange, mark=o] coordinates {
+    (0, 76.0)
+    (10, 81.71)
+    (20, 85.37)
+    (30, 86.5)
+    (40, 86.5)
+    (50, 86.5)
+    (60, 86.5)
+    (70, 87.20)
+    (80, 87.20)
+    (90, 87.20)
+    (100, 87.20)
+    (110, 87.20)
+    (120, 87.20)
+};
+\small\addlegendentry{GRASP ($\alpha$ = 0.2)}
+\end{axis}
+\end{tikzpicture}

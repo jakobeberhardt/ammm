@@ -18,8 +18,13 @@ full:
 
 .PHONY: all full
 
-pdf: ammm.tex
-	pdflatex \\nonstopmode \\input ammm.tex; code ./ammm.pdf
+report: tex/project/report.tex
+	cd ./tex; pdflatex \\nonstopmode \\input project/report.tex; cd ..; code ./tex/report.pdf
+
+presentation: tex/project/presentation.tex
+	cd ./tex; pdflatex \\nonstopmode \\input project/presentation.tex; cd ..; code ./tex/presentation.pdf
+
+pdf: report presentation
 
 clean:
-	rm *.aux *.log
+	rm ./tex/*.aux ./tex/*.nav ./tex/*.out ./tex/*.snm ./tex/*.lof ./tex/*.toc ./tex/*.log tex/report.pdf tex/presentation.pdf

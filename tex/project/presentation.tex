@@ -1,0 +1,285 @@
+\documentclass[presentation]{beamer}
+\usepackage{xcolor} 
+\usepackage{colortbl} 
+\usepackage{amsmath}  
+\usepackage{float}
+\usepackage{pgfplots}
+\usefonttheme{structurebold}
+\usetheme{Madrid} 
+\usecolortheme{seahorse}
+\pgfplotsset{compat=1.18}
+
+% Title page details
+\title{Algorithmic Methods for Mathematical Models Course Project}
+\subtitle{Mathematics of Baking}
+\author{Tim Wichelmann \and Jakob Eberhardt}
+%\institute{}
+\date{December 19th}
+\setbeamertemplate{footline}{
+   \leavevmode%
+   \hbox{%
+   \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+     % Left box - can be empty or add content if needed
+   \end{beamercolorbox}%
+   \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+     AMMM - Course Project - 19/12/2023
+   \end{beamercolorbox}%
+   \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+     \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+   \end{beamercolorbox}}%
+   \vskip0pt%
+}
+
+
+
+\begin{document}
+\frame{\titlepage}
+\section{ILP}
+%%% Instance data
+\begin{frame}{Instance Input Data}
+\begin{itemize}
+    \item Number of items (\texttt{n})
+    \item Time periods (\texttt{t})
+    \item Profits (\texttt{profit})
+    \item Lengths (\texttt{length})
+    \item Minimum deliveries (\texttt{min\_deliver})
+    \item Maximum deliveries (\texttt{max\_deliver})
+    \item Surfaces (\texttt{surface})
+    \item Surface capacity (\texttt{surface\_capacity})
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Decision Variables and Objective Function}
+
+\subsection{Decision Variables}
+\begin{itemize}
+    \item \( y \) is a matrix of size \( n \times t \) consisting of binary variables which indicate if the order \( i \) will be baked in time slot \( j \).
+    \item \( x_i \) is a binary variable indicating whether order \( i \) has the right amount of time slots assigned to it.
+    \item \( \mathit{start}_i \) denotes the time slot in which the baking process of order \( i \) is started.
+    \item \( \mathit{end}_i \) denotes the time slot in which the baking process of order \( i \) will be finished.
+\end{itemize}
+
+\subsection{Objective Function}
+\begin{equation*}
+  \max \sum^n_{i = 1} \mathit{profit}_i \times x_i
+\end{equation*}
+
+\textbf{Goal:} The objective is to maximize the total profit, calculated as the sum of profits of each order that is successfully scheduled while respecting the constraints.
+\end{frame}
+
+\begin{frame}{Surface Constraint}
+
+\textbf{Problem:} The naive schedule would exceed our oven capacity
+
+\textbf{Constraint:} In every time slot, the space capacity is respected.
+    \begin{align}
+        \sum^n_{i=1}\mathit{surface}_i \: y_{ij} &\leq \mathit{surface\_capacity}, &&(1 \leq j \leq t)
+    \end{align}
+\end{frame}
+
+\begin{frame}{Continuity \& Length Constraint}
+\textbf{Problem:} Once started, an order has to be continuously processed for the needed time lots associated with it. 
+
+\textbf{Constraint:} If an order $i$ is part of the schedule, it is assigned the $\mathit{length}_i - 1$ contiguous time slots from $\mathit{start}_i$ to $\mathit{end}_i$:
+    \begin{align}
+        y_{ij} &= (j \geq \mathit{start}_i) \land (j \leq \mathit{end}_i), &&(1 \leq i \leq n, 1 \leq j \leq t).
+   \end{align}
+
+   Can also be done without logic operators (see report).
+
+    \textbf{Optimization}: Check only feasible slots for order $i$.
+   
+\end{frame}
+
+% \begin{frame}{Greedy construction phase}
+% To select the order and a time slot to be added to the solution:
+% \begin{enumerate}
+%     \item Sort the orders by their \alert{rating} (descending) and select the first order $i$.
+%     \item Sort the possible starting time slots for order $i$ by their \alert{rating} (descending) and select the first time slot $j$.
+% \end{enumerate}
+% \end{frame}
+
+\begin{frame}{Lets consider this optimal solution}
+Objective function value: 164.
+%%% Optimal 125, 125_plot.dat, laufzeit: 3h
+\begin{figure}[H]
+\centering
+\input{project/figures/125_optimal}
+\end{figure}  
+\end{frame}
+
+\begin{frame}{Greedy cost function}
+\begin{block}{Greedy cost function is split into two parts:}
+    
+\begin{itemize}
+    \item For an order $i$:
+         Only consider its profit.
+
+    \item For a possible starting time slot $j$ (for a fixed order $i$): 
+        The average percentage of space used during the baking
+        \begin{center}
+            $$\frac{\sum_{l=j}^{j + \mathit{length}_i} (\sum_{k=1}^n y_{kj} \mathit{surface}_k / \mathit{surface\_capacity})}{\mathit{length}_i}$$
+        \end{center}
+    \end{itemize}
+    \end{block}
+    \begin{itemize}
+            \item Objective function value: 97
+    \item \textbf{Optimality gap: 41\%}
+    \end{itemize}
+    \end{frame}
+
+\begin{frame}{Greedy only considering profit}
+%%% Greedy 97, 125_plot.dat, profit only
+\begin{figure}[H]
+\centering
+\input{project/figures/125_greedy_profit}
+
+\end{figure}  
+\end{frame}
+    
+\begin{frame}{Greedy cost function}
+\begin{block}{Improvement for greedy}
+For an order $i$:
+        \begin{itemize}
+            \item Also consider other attributes:
+            $$\frac{\mathit{profit}_i (\mathit{max\_deliver}_i - \mathit{min\_deliver}_i)}{(\mathit{length}_i \cdot \mathit{surface}_i)}$$
+        \end{itemize}
+\end{block}
+
+\begin{itemize}
+        \item Objective function value: 126 
+        \item \textbf{Optimality gap: 23\%} 
+        \end{itemize}
+\end{frame}
+
+%%% Greedy 126, 125_plot.dat,         return (self.profit * (self.max_deliver - self.min_deliver)) / (self.length * self.surface)
+%%% Dropped order 14 in favor of many small orders
+\begin{frame}{Scoring the orders}
+\begin{figure}[H]
+\centering
+\input{project/figures/125_greedy_scoreing}
+\end{figure}  
+\end{frame}
+
+
+\begin{frame}{Local search criteria}
+\begin{block}{Local Search}
+    \begin{itemize} 
+    \item Remove the order with the highest surface from the current schedule.
+    \item Try to fit in the previously unused orders (in order of descending profit). 
+    \end{itemize}
+    \end{block}
+
+    \begin{itemize} 
+    \item 45 seconds of local search
+    \item Objective value: 127
+    \item \textbf{Optimality gap: 22.5\%}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Greedy cost function}
+    \begin{block}{GRASP}
+    \begin{itemize}
+    \item Best results: select orders the same way as in greedy, according to their greedy cost function.
+    \item Use an RCL with parameter $\alpha$ for selecting the time slot.
+\end{itemize}
+\end{block}
+
+    \begin{itemize}
+    \item 60 seconds, $\alpha$ = 0.8
+    \item Objective value: 146
+    \item \textbf{Optimality gap: 11\%}
+\end{itemize}
+
+\end{frame}
+
+%%% GRASP, a=0.8, obj= 1min, 5 iterations, 146 obj
+\begin{frame}{GRASP after 1 minute and 5 improvements}
+\begin{figure}[H]
+\centering
+\input{project/figures/125_grasp_5min_a1}
+\end{figure}  
+\end{frame}
+
+%%% tuning alpha 
+\begin{frame}{Tuning the $\alpha$-parameter}
+\begin{figure}[H]
+\centering
+\input{project/figures/125_alpha_grasp}
+%% Isert \input{project/figures/grasp_progress time}
+\end{figure}  
+\end{frame}
+
+%%% tuning alpha 
+\begin{frame}{Time and $\alpha$-parameter}
+\begin{figure}[H]
+\centering
+\input{project/figures/grasp_progress time}
+\end{figure}  
+\end{frame}
+
+% TODO Discuss if we include this
+% neeee
+% \begin{frame}{Problem size vs. execution time}
+% \input{project/figures/time_0}
+% \end{frame}
+
+\begin{frame}{Problem size vs. solution quality}
+\centering
+\input{project/figures/quality_0}
+\end{frame}
+
+\begin{frame}{Greedy and very big instances}
+\centering
+\input{project/figures/greedy_time}
+\end{frame}
+
+\begin{frame}{Conclusion and Future Prospects}
+
+\begin{block}{Results}
+    \begin{itemize}
+    \item Developed the model
+    \item Obtained optimal solutions using CPLEX
+    \item Implemented and benchmarked different greedy cost functions
+    \item Improved the greedy solutions using local search
+    \item Applied the GRASP meta-heuristic
+    \item Tuned $\alpha$ towards a consistent single-digit optimality gap in 60 seconds
+\end{itemize}
+\tikz[overlay, remember picture] \node[anchor=north east, xshift=-1cm, yshift=-1.95cm, rotate=-23] at (current page.north east) {\includegraphics[width=1.8cm]{project/figures/vecteezy_archivo-png-de-pan-largo-de-dibujos-animados_10178998.png}};
+\end{block}
+
+\begin{block}{Additional Considerations}
+    \begin{itemize}
+    \item Greedy: Try different combinations of order/time slot greedy cost functions.
+    \item GRASP: Apply the RCL to the list of sorted orders to explore more diverse solutions.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Conclusion and Future Prospects}
+\centering\textbf{Backup Slides}
+\end{frame}
+
+\begin{frame}{Continuity \& Length Constraint}
+\textbf{Problem:} Once started, an order has to be continuously processed for the needed time lots associated with it. 
+
+\textbf{Constraint:}
+
+If an order $i$ is part of the schedule, it is assigned the $\mathit{length}_i - 1$ contiguous time slots from $\mathit{start}_i$ to $\mathit{end}_i$:
+    \begin{align}
+      j &\geq \mathit{start}_i - (t+1) * (1-\mathit{geq\_start}_{ij}) \\
+      \mathit{start}_i &\geq j - (t+1) * \mathit{geq\_start}_{ij} \\
+      \mathit{end}_i &\geq j - (t+1) * (1-\mathit{leq\_end}_{ij}) \\
+      j &\geq \mathit{end}_i - (t+1) * \mathit{leq\_end}_{ij} \\
+      0 &\leq \mathit{geq\_start}_{ij} + \mathit{leq\_end}_{ij} - 2 * y_{ij}, &&(1 \leq i \leq n, \mathit{min\_start}_i \leq j \leq \mathit{max\_deliver}_i) 
+   \end{align}
+
+\end{frame}
+
+\begin{frame}{CPLEX execution time}
+\centering
+\input{project/figures/time_cplex}
+\end{frame}
+
+\end{document}
+

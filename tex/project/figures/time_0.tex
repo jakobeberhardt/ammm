@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+\begin{axis}[
+    title={},
+    xlabel={Number of Orders / Timeslots},
+    ylabel={Execution Time (seconds)},
+    xtick=data,
+    xticklabels={1,2,4,8,16},
+    symbolic x coords={1,2,4,8,16},
+    xticklabel style={anchor=base, yshift=-\baselineskip},
+    yticklabel style={/pgf/number format/fixed},
+    legend pos=north east,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=orange,
+    mark=square,
+    ]
+    coordinates { % 
+    (1, 17.88) % Added data 8.dez
+    };
+    \legend{Execution Time}
+
+\end{axis}
+\end{tikzpicture}
