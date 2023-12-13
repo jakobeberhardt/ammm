@@ -21,7 +21,7 @@ The project is structured as followed:
   - Instance Generator
 - **src/py/misc** includes various scripts for benchmarking and plotting data regarding the Python implementations
 - **Makefile** can be used to automate CPLEX benchmarks
-- **src/py/HeuristicsProject/data** includes instances used for benchmarking
+- **src/py/HeuristicsProject/data** includes example instances of many sizes
 - **results.ods** includes the benchmarking results used in the report
 
 ## Running the ILP
